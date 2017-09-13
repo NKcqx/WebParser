@@ -1,22 +1,52 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>test</title>
+    <title id="webtitle">Web Content Parser</title>
     {% load static %}
     <link rel="stylesheet" type="text/css" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
 </head>
 <body>
-<div class="contaner">
+<div class="container">
     <div class="row">
         <div class="col-md-2"></div>
         <div class="col-md-8 board">
-                <div class="top">
-                    <h1 id = "title"></h1>
+            <div class="toolbar">
+                <div id="tools" class="collapse">
+                    <div class="toolitem">
+                        <label>夜间模式: </label> 
+                        <label class="switch">
+                            <input type="checkbox">
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+                    <div class="toolitem">
+                        <label>大字体: </label>
+                        <label class="switch">
+                            <input type="checkbox">
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+                    <div id="save" class="toolitem">
+                        <label>收藏:</label>
+                        <button class="btn btn-primary btn-xs">Save</button>
+                    </div>
+                    <div id="save" class="toolitem">
+                        <button class="btn btn-link">个人主页</button>
+                    </div>
                 </div>
-                <div id="content">
-                    <button id = 'btn' class = 'btn btn-primary'>test</button>
-                </div>
-            
+                <button id = "trigger" class = "btn btn-default" data-toggle="collapse" data-target="#tools"><span class="glyphicon glyphicon-wrench"></span></button>
+            </div>
+            <div class="top">
+                <img id="logo" src="#"> <a id="domain" href="#"></a>
+                <h1 id = "title"></h1>
+                <div id = "date"></div>
+            </div>
+            <hr class="dividline">
+            <div id="content" class="content">
+                <button id = 'btn' class = 'btn btn-primary'>test</button>
+            </div>
+            <hr class="dividline">
+            <div class="foot"></div>
         </div>
         <div class="col-md-2"></div>
     </div>
@@ -24,6 +54,7 @@
 </body>
 
 <script type="text/javascript" src = 'http://libs.baidu.com/jquery/1.11.1/jquery.min.js'></script>
+<script type="text/javascript" src = "{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
 <script type="text/javascript">
     $(document).ready(function () {
         $("#btn").click(function () {
@@ -33,7 +64,11 @@
                 data: {'url': 'http://www.cnblogs.com/leoo2sk/archive/2010/09/17/naive-bayesian-classifier.html'},
                 success: function (data) {
                     data = JSON.parse(data)
+                    $('#logo').attr({'src': 'https://www.google.com/s2/favicons?domain=' + data['domain']})
+                    $('#domain').attr({'href': 'http://'+data['domain']})
+                    $('#domain').text(data['domain'])
                     $('#title').text(data['title'])
+                    $('#date').text(data['date_published'])
                     $('#content').html(data['content'])
                     $('#img').attr({'src':data['lead_image_url']})
                 },
@@ -45,13 +80,117 @@
     })
 </script>
 <style type="text/css">
+    body {
+        background-color: rgb(210,210,210);
+    }
+
+    img {
+        max-width: 100%;
+        height: auto;
+    }
+
+    .tools {
+        display: inline;
+    }
+
+    .toolitem {
+        display: inline;
+        margin: 5%;
+    }
+
     .board {
-        padding-left: 8%;
-        padding-right: 8%;
-        background-color: rgb(200,200,200);
+        margin-top: 5%;
+        padding: 4% 5% 0 5%;
+        padding-right: 4%;
+        background-color: rgb(204,232,207);
+        border-radius: 15px
     }
-    #content {
-        background-color: white
+
+    .dividline {
+        border: 0;
+        height: 1px;
+        background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0));
     }
+
+    .content {
+        font-size: 20px;
+    }
+
+    .foot {
+        margin-top: 5%;
+    }
+
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 40px;
+      height: 20px;
+    }
+
+    /* Hide default HTML checkbox */
+    .switch input {display:none;}
+
+    /* The slider */
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #ccc;
+      -webkit-transition: .4s;
+      transition: .4s;
+      border-radius: 34px;
+    }
+
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 12px;
+      width: 12px;
+      left: 4px;
+      bottom: 4px;
+      background-color: white;
+      -webkit-transition: .4s;
+      transition: .4s;
+      border-radius: 34px;
+    }
+
+    input:checked + .slider {
+      background-color: #2196F3;
+    }
+
+    input:focus + .slider {
+      box-shadow: 0 0 1px #2196F3;
+    }
+
+    input:checked + .slider:before {
+      -ms-transform: translateX(20px);
+      transform: translateX(20px);
+    }
+
+    #save {
+    }
+
+    #date {
+        position: relative;
+        color: grey;
+        font-family: serif;
+    }
+
+    #trigger {
+        border: none;
+        float: right;
+        background-color: transparent;
+    }
+    
+    #domain {
+        display: inline;
+        color: grey;
+        font-family: monospace;
+    }
+
+    
 </style>
 </html>

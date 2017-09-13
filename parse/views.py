@@ -12,24 +12,10 @@ def index (request):
 def parseWeb (request):
     url = request.GET.get('url')
     result = parse(url)
-    print('result', json.dumps({
-                'title': result.title,
-                'date_published': result.date_published.strftime('%Y-%-m-%d %H:%m:%S'),
-                'lead_image_url': result.lead_image_url,
-                'def': result.dek,
-                'url': result.url,
-                'domain': result.domain,
-                'excerpt': result.excerpt,
-                'word_count': result.word_count,
-                'direction': result.direction,
-                'total_pages': result.total_pages,
-                'rendered_pages': result.rendered_pages,
-                'next_page_url': result.next_page_url
-            }))
     return HttpResponse(json.dumps({
                 'title': result.title,
                 'content': result.content,
-                'date_published': result.date_published.strftime('%Y-%-m-%d %H:%m:%S'),
+                'date_published': result.date_published.strftime('%Y年%-m月%d日  %H:%m:%S'),
                 'lead_image_url': result.lead_image_url,
                 'def': result.dek,
                 'url': result.url,
