@@ -65,7 +65,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
-            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
+            #'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
         },
     },
 ]
