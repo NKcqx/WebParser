@@ -6,7 +6,52 @@
     <link rel="stylesheet" type="text/css" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
 </head>
 <body>
-<button class = 'btn btn-primary'>test</button>
-<h3 class="text-muted"> -- {{test}} --</h3>
+<div class="contaner">
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-8 board">
+                <div class="top">
+                    <h1 id = "title"></h1>
+                </div>
+                <div id="content">
+                    <button id = 'btn' class = 'btn btn-primary'>test</button>
+                </div>
+            
+        </div>
+        <div class="col-md-2"></div>
+    </div>
+</div>
 </body>
+
+<script type="text/javascript" src = 'http://libs.baidu.com/jquery/1.11.1/jquery.min.js'></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#btn").click(function () {
+            $.ajax({
+                url: {% url 'parseWeb' %},
+                type: "GET",
+                data: {'url': 'http://www.cnblogs.com/leoo2sk/archive/2010/09/17/naive-bayesian-classifier.html'},
+                success: function (data) {
+                    data = JSON.parse(data)
+                    $('#title').text(data['title'])
+                    $('#content').html(data['content'])
+                    $('#img').attr({'src':data['lead_image_url']})
+                },
+                error: function(a, b, c) {
+                    console.log('error')
+                }
+            })
+        })
+    })
+</script>
+<style type="text/css">
+    .board {
+        padding-left: 8%;
+        padding-right: 8%;
+        background-color: rgb(200,200,200);
+    }
+    #content {
+        background-color: white
+    }
+</style>
 </html>
