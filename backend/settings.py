@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
+from mongoengine import connect
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -37,6 +38,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'mongoengine',
     'parse',
 )
 
@@ -76,12 +78,17 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.8/ref/settings/#databases
 
+MONGODB_DATABASES = {
+    "default": {
+        "name": "test",
+        "host": '127.0.0.1',
+        "tz_aware": True, # set timezone
+    },
+}
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'parser',
-        'USER': 'jason',
-        'PASSWORD': ''
+        'ENGINE': None,
     }
 }
 
@@ -105,3 +112,4 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+connect("test", host='127.0.0.1')
