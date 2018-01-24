@@ -1,7 +1,8 @@
 from django.conf.urls import include, url
-from . import views
+from .views import index, reader
 
 urlpatterns = [
-    url(r'^$', views.index, name = 'index'),
-    url(r'^parse/$', views.parseWeb, name = 'parseWeb')
+    url(r'^$', index.show, name = 'index'),
+    url(r'^parseWeb/$', reader.parseWeb, name = 'parseWeb'),
+    url(r'^addWeb/$', index.add, name='addWeb')
 ]

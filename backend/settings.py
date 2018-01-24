@@ -80,7 +80,7 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 
 MONGODB_DATABASES = {
     "default": {
-        "name": "test",
+        "name": "testa",
         "host": '127.0.0.1',
         "tz_aware": True, # set timezone
     },
@@ -112,4 +112,4 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-connect("test", host='127.0.0.1')
+connect("testa", host='127.0.0.1')

@@ -1,196 +1,297 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <title id="webtitle">Web Content Parser</title>
-    {% load static %}
-    <link rel="stylesheet" type="text/css" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
-</head>
-<body>
-<div class="container">
-    <div class="row">
-        <div class="col-md-2"></div>
-        <div class="col-md-8 board">
-            <div class="toolbar">
-                <div id="tools" class="collapse">
-                    <div class="toolitem">
-                        <label>夜间模式: </label> 
-                        <label class="switch">
-                            <input type="checkbox">
-                            <span class="slider round"></span>
-                        </label>
-                    </div>
-                    <div class="toolitem">
-                        <label>大字体: </label>
-                        <label class="switch">
-                            <input type="checkbox">
-                            <span class="slider round"></span>
-                        </label>
-                    </div>
-                    <div id="save" class="toolitem">
-                        <button class="btn btn-primary btn-xs">Save</button>
-                    </div>
-                    <div id="save" class="toolitem">
-                        <a href="#" class="toolitem">个人主页</a>
-                    </div>
-                    
+    <head>
+        <title id="webtitle">Web Content Parser</title>
+        <!--{% load static %}-->
+        <link rel="stylesheet" type="text/css" href="../static/bootstrap/css/bootstrap.min.css">
+        <!--<link rel="stylesheet" type="text/css" href="{% static 'bootstrap/css/bootstrap.min.css' %}">-->
+    </head>
+    <body>
+        <!--top navigation-->
+        <nav class="navbar navbar-default navbar-fixed-top test">
+            <div class="container-fluid">
+                <div class="navbar-header"><img id="logo" style="height: 40px;" src="../static/img/logo.jpg" alt="logo.png" /></div>
+                <div id="top-navbar-left" class="navbar-left pull-left">
+                    <ul class="nav navbar-nav">
+                    <li><a class="top-item top-item-left inner-anchor active" href="#"><b>主页</b></a></li>
+                    <li><a class="top-item top-item-left inner-anchor" href="#"><b>推荐</b></a></li>
+                    </ul>
                 </div>
-                <button id = "trigger" class = "btn btn-default" data-toggle="collapse" data-target="#tools"><span class="glyphicon glyphicon-wrench"></span></button>
+                <div>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><img id="avatar" class="nav navbar-nav navbar-right" src="../static/img/avatar.jpg" alt="" /></li>
+                <!--<img id="user-avatar" class="img-circle" src="demo.jpg" alt="">-->
+                        <li class="dropdown"><a id="top-userinfo" class="inner-anchor dropdown-toggle" href="#" data-toggle="dropdown">Username <span class="glyphicon glyphicon-chevron-down"></span></a>
+                            <ul class="dropdown-menu">
+                                <li class="divider"></li>
+                                <li><a class="inner-anchor" href="#"> Config</a></li>
+                                <li><a class="inner-anchor" href="#"> Logout</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <a id="top-toolkits-add" class="nav navbar-nav navbar-right inner-anchor"><span class="glyphicon glyphicon-plus"></span></a>
+                    <form id="top-toolkits-search" class="navbar-form navbar-right" method="post" action="{% url 'addWeb' %}">
+                        <div class="form-group">
+                            <input class="form-control" type="text" placeholder="Search with URL or Title" />
+                        </div>
+                    </form>
+                </div>
             </div>
-            <div class="top">
-                <img id="logo" src="#"> <a id="domain" href="#"></a>
-                <h1 id = "title"></h1>
-                <div id = "date"></div>
+        </nav>
+        <!--center content list-->
+        <div class="main-body">
+            <div class="left-navigation col-md-3">
+                <ul class="sidebar-left pull-center">
+                    <li id="sidebar-left-title" class="sidebar-left-item"><a class="inner-anchor active" href="#">My List</a></li>
+                    <li class="sidebar-left-item"><a id="favorite" class="inner-anchor" href="#">Add To favorite</a></li>
+                    <li class="sidebar-left-item"><a class="inner-anchor" href="#">Text</a></li>
+                    <li class="sidebar-left-item"><a class="inner-anchor" href="#">Video</a></li>
+                    <li class="sidebar-left-item"><a class="inner-anchor" href="#">Image</a></li>
+                    <li id="tags" class="sidebar-left-item"><a id="tags" class="inner-anchor" href="#">Tags <span class="glyphicon glyphicon-chevron-right"></span></a>
+                        <ul id="tag-list">
+                            {% for tag in tags %}
+                                <li class="tag-list-item"><a class="inner-anchor" href="#">{{ tag }}</a></li>
+                            {% endfor %}
+                            <li class="tag-list-item">bitcoin</li>
+                            <li class="tag-list-item">bitcoin</li>
+                            <li class="tag-list-item">bitcoin</li>
+                            <li class="tag-list-item">bitcoin</li>
+                            <li class="tag-list-item">bitcoin</li>
+                            <li class="tag-list-item">bitcoin</li>
+                            <li class="tag-list-item">bitcoin</li>
+                            <li class="tag-list-item">Mechine Learning</li>
+                            <li class="tag-list-item">Data mining</li>
+                        </ul>
+                    </li>
+                </ul>
             </div>
-            <hr class="dividline">
-            <div id="content" class="content">
-                <button id = 'btn' class = 'btn btn-primary'>test</button>
+            <div class="main-list col-md-7">
+                <div class="main-list-head">
+                    <h1>My Notes</h1>
+                </div>
+                {% for note in notes %}
+                <div class="main-list-item" id="{{ note.id }}">
+                    <img class="main-list-img" src="{{ note.lead_image_url }}" alt="" />
+                    <div class="main-list-info">
+                        <div class="list-info-head">
+                            <h3 class="list-info-title">
+                            {{ note.title }}
+                            </h3>
+                            <span class="list-info-toolbar">
+                                <a href="#" class="inner-anchor"><span class="toolbar-item glyphicon glyphicon-envelope" uid="{{ note.id }}" method="1"></span></a>
+                                <a href="#" class="inner-anchor"><span class="toolbar-item glyphicon glyphicon-cloud-download" uid="{{ note.id }}" method="2"></span></a>
+                                <a href="#" class="inner-anchor"><span class="toolbar-item glyphicon glyphicon-share-alt" uid="{{ note.id }}" method="3"></span></a>
+                                <a href="#" class="inner-anchor"><span class="toolbar-item glyphicon glyphicon-trash" uid="{{ note.id }}" method="4"></span></a>
+                            </span>
+                        </div>
+                        <div class="list-info-body">
+                            <span class="list-info-url">
+                                <a href="{{ note.url }}" class="readon inner-anchor">{{ note.domain }}</a>
+                            </span>
+                            <span class="label label-default"><a href="#" class="inner-anchor tag">tag1</a></span>
+                            <span class="label label-default"><a href="#" class="inner-anchor tag">tag1</a></span>
+                            <span class="label label-default"><a href="#" class="inner-anchor tag">tag1</a></span>
+                            <span class="label label-default"><a href="#" class="inner-anchor tag">tag1</a></span>
+                        </div>
+                    </div>
+	            </div>
+                {% endfor %}
             </div>
-            <hr class="dividline">
-            <div class="foot"></div>
+            <div class="col-md-2"></div>
         </div>
-        <div class="col-md-2"></div>
-    </div>
-</div>
-</body>
+    </body>
+    <script src="../static/bootstrap/js/jquery-1.9.1.min.js"></script>
+    <script src="../static/bootstrap/js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $(".main-list-item").mouseover(function(){
+              $(this).find(".list-info-toolbar").show("fast");
+            });
+            $(".main-list-item").mouseleave(function(){
+              $(this).find(".list-info-toolbar").hide("fast");
+            });
+            $("#tags").click(function() {
+                $(this).find("#tag-list").show("fast");
+            });
+            $("#tags").focusout(function(){
+                $(this).find("#tag-list").hide("fast");
+            });
+            // $("#top-toolkits-search").bind("submit" ,function(){
+             //   var keyword = $("#top-toolkits-search").val();
+            //});
+            $(".tag-list-item").mouseover(function(){
+                $(this).animate({
+                    paddingLeft:'12px'
+                }, "fast");
+            });
+            $(".tag-list-item").mouseleave(function(){
+                $(this).animate({
+                    paddingLeft:'4px'
+                }, "fast");
+            });
+            $(".toolbar-item").click(function(){
+                $.ajax({
+                    url: "ItemManage/",
+                    data:{"method": $(this).getAttribute("method"), "id":$(this).getAttribute("uid")},
+                    success:function(data){
+                        alert(data);
+                    },
+                    error:function (err, b, c) {
+                        alert(err);
+                    }
+                })
+            });
+        });
+    </script>
+    <!--<script scr="{% static 'bootstrap/js/bootstrap.js' %}"></script>
+    <script scr="{% static 'bootstrap/js/jquery.min.js' %}"></script>-->
+    <style>
+        html {
+            background-color: rgb(240,240,240);
+        }
+        ul.sidebar-left {
+            font-size: 120%;
+            list-style-type:none;
+            margin-bottom: 7px;
+        }
+        ul li.sidebar-left-item {
+            margin-bottom: 10px;
+        }
+        ul li.sidebar-left-item:hover {
+            font-color:green !important;
+        }
+        .active {
 
-<script type="text/javascript" src = 'http://libs.baidu.com/jquery/1.11.1/jquery.min.js'></script>
-<script type="text/javascript" src = "{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
-<script type="text/javascript">
-    $(document).ready(function () {
-        $("#btn").click(function () {
-            $.ajax({
-                url: {% url 'parseWeb' %},
-                type: "GET",
-                data: {'url': 'http://www.cnblogs.com/leoo2sk/archive/2010/09/17/naive-bayesian-classifier.html'},
-                success: function (data) {
-                    data = JSON.parse(data)
-                    $('#logo').attr({'src': 'https://www.google.com/s2/favicons?domain=' + data['domain']})
-                    $('#domain').attr({'href': 'http://'+data['domain']})
-                    $('#domain').text(data['domain'])
-                    $('#title').text(data['title'])
-                    $('#date').text(data['date_published'])
-                    $('#content').html(data['content'])
-                    $('#img').attr({'src':data['lead_image_url']})
-                },
-                error: function(a, b, c) {
-                    console.log('error')
-                }
-            })
-        })
-    })
-</script>
-<style type="text/css">
-    body {
-        background-color: rgb(210,210,210);
-    }
+        }
+        .label-default {
+            background-color: rgb(180,180,180) ;
+            cursor: pointer;
+        }
+        .inner-anchor {
+            color:grey;
+        }
+        .inner-anchor:hover {
+            text-decoration: none !important;
+            color:#50bcb6 !important;
+        }
+        .top-item-left:hover {
+            border-bottom: solid 1px !important;
+            border-bottom-color: #50bcb6 !important;
+        }
+        .top-item-left {
+            width: 100%;
+            font-size:130% !important;
+            margin-left: 3% !important;
+        }
+        .tag {
+            color: white;
+        }
+        .main-body {
+            margin-top: 5%;
+        }
+        .main-list {
+            display: flex;
+            flex-direction: column;
+        }
+        .main-list-head {
+            margin-bottom: 1%;
+        }
+        .list-head-icon {
+            font-size: 120%;
+            margin-right: 10px;
+        }
+        .main-list-item {
+            border-top: solid 1px;
+            border-left: solid 1px;
+            border-right: solid 1px;
+            border-color: rgb(220,220,220);
+            display: flex;
+            flex-direction: row;
+            height: 90px;
+            width: 100%;
+            background-color: white;
+        }
+        .main-list-img {
+            height: 90px;
+            width: 90px;
+            background-color: white;
+        }
+        .main-list-info {
+            width: 100%;
+            margin-left: 3%;
+        }
 
-    img {
-        max-width: 100%;
-        height: auto;
-    }
+        .list-info-head {
+            margin-top:1%;
+        }
+        h3.list-info-title {
+            margin-top:1%;
+            display:inline;
+            text-overflow: ellipsis;
+            width: 80%;
+            margin-bottom: 20%;
+            color: black;
+        }
+        .list-info-toolbar {
+            display: none;
+            float: right;
+            width: 18%;
+        }
+        .list-info-body {
+            margin-top: 4%;
+        }
+        .toolbar-item {
+            margin-right: 7%;
+        }
+        .list-info-url {
+            margin-right: 3%;
+            font-size:13px;
+        }
+        .tag-list-tag {
+            color:white;
+            display: none;
+        }
+        .tag-list-item {
+            text-decoration: none;
+            color: black;
+            padding-left: 4px;
+            font-size: 15px;
+            text-align: left;
+            margin-top: 3%;
+        }
+        .tag-list-item:hover {
+            color:white;
+            background-color: #50bcb6;
+        }
+        #avatar {
+            width: 28px;
+            height: 28px;
+            border-radius: 28px;
+            margin-top :11px;
+            margin-right: 0px;
+        }
+        #top-userinfo {
 
-    .tools {
-        display: inline;
-    }
+        }
+        #favorite {
+            border-bottom: solid 1px;
+            border-bottom-color: grey;
+            padding-bottom: 10px;
+        }
+        #tags {
+            position: relative;
+            display: inline;
+        }
+        #tag-list {
+            display: none;
+            float: right;
+            width: 80%;
+            height: 200px;
+            overflow-y: scroll;
+            list-style-type:none;
+            background-color: white;
+            padding-left: 4%;
+        }
 
-    .toolitem {
-        display: inline;
-        margin: 5%;
-    }
-
-    .board {
-        margin-top: 5%;
-        padding: 4% 5% 0 5%;
-        padding-right: 4%;
-        background-color: rgb(204,232,207);
-        border-radius: 15px
-    }
-
-    .dividline {
-        border: 0;
-        height: 1px;
-        background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0));
-    }
-
-    .content {
-        font-size: 20px;
-    }
-
-    .foot {
-        margin-top: 5%;
-    }
-
-    .switch {
-      position: relative;
-      display: inline-block;
-      width: 40px;
-      height: 20px;
-    }
-
-    /* Hide default HTML checkbox */
-    .switch input {display:none;}
-
-    /* The slider */
-    .slider {
-      position: absolute;
-      cursor: pointer;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background-color: #ccc;
-      -webkit-transition: .4s;
-      transition: .4s;
-      border-radius: 34px;
-    }
-
-    .slider:before {
-      position: absolute;
-      content: "";
-      height: 12px;
-      width: 12px;
-      left: 4px;
-      bottom: 4px;
-      background-color: white;
-      -webkit-transition: .4s;
-      transition: .4s;
-      border-radius: 34px;
-    }
-
-    input:checked + .slider {
-      background-color: #2196F3;
-    }
-
-    input:focus + .slider {
-      box-shadow: 0 0 1px #2196F3;
-    }
-
-    input:checked + .slider:before {
-      -ms-transform: translateX(20px);
-      transform: translateX(20px);
-    }
-
-    #save {
-    }
-
-    #date {
-        position: relative;
-        color: grey;
-        font-family: serif;
-    }
-
-    #trigger {
-        border: none;
-        float: right;
-        background-color: transparent;
-    }
-    
-    #domain {
-        display: inline;
-        color: grey;
-        font-family: monospace;
-    }
-
-    
-</style>
+    </style>
 </html>
